@@ -9,8 +9,10 @@
       :value-property="reduceValueProperty"
       :placeholder-text="searchOptionsPlaceholder"
       :search-input-class="searchInputClass"
+      :async-search="asyncAvailableSearch"
       class="msl-multi-select__list"
       @onClickOption="onOptionSelect"
+      @search="onSearchAvailable"
     />
 
     <div class="msl-multi-select__actions">
@@ -153,6 +155,10 @@ export default {
       type: String,
       default: '',
     },
+    asyncAvailableSearch: {
+      type: Boolean,
+      default: false,
+    },
   },
   data() {
     return {
@@ -183,6 +189,9 @@ export default {
   },
 
   methods: {
+    onSearchAvailable(searchText) {
+      this.$emit('searchAvailable', searchText);
+    },
     onOptionSelect(option) {
       this.selectedItems.push(option);
       const items = [...this.value, getValueFromOption(this.valueProperty, option)];

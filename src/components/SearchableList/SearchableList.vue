@@ -88,6 +88,10 @@ export default {
       type: String,
       default: 'No options found',
     },
+    asyncSearch: {
+      type: Boolean,
+      default: false,
+    },
   },
   data() {
     return {
@@ -110,6 +114,7 @@ export default {
       },
       set: debounce(function setNewValue(newValue) {
         this.searchText = newValue;
+        this.$emit('search', this.searchText);
       }, 500),
     },
     availableItems() {
@@ -125,7 +130,7 @@ export default {
       return this.listItems;
     },
     filteredListItems() {
-      if (this.searchText !== undefined) {
+      if (!this.asyncSearch && this.searchText !== undefined) {
         return this.availableItems.filter(function filterItem(item) {
           const display = this.getOptionDisplay(item, this.displayProperty);
 
